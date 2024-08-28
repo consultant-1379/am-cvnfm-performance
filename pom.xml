@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~ COPYRIGHT Ericsson 2023
+ ~
+ ~
+ ~
+ ~ The copyright to the computer program(s) herein is the property of
+ ~
+ ~ Ericsson Inc. The programs may be used and/or copied only with written
+ ~
+ ~ permission from Ericsson Inc. or in accordance with the terms and
+ ~
+ ~ conditions stipulated in the agreement/contract under which the
+ ~
+ ~ program(s) have been supplied.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+   <groupId>com.ericsson.orchestration.mgmt</groupId>
+    <artifactId>am-cvnfm-performance</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+  <properties>
+    <jmeter.results>${project.basedir}/target/performance/results</jmeter.results>
+    <jmeter.results.format>csv</jmeter.results.format>
+    <jmeter.reports>${project.basedir}/target/performance/reports</jmeter.reports>
+    <apache-jmeter.version>5.6.3</apache-jmeter.version>
+    <jmeter.version>5.6.2</jmeter.version>
+    <jmeter.plugin.version>3.5.0</jmeter.plugin.version>
+    <jmeter.global.props>${project.basedir}/src/test/jmeter/configuration/global.properties</jmeter.global.props>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>2.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.jmeter</groupId>
+      <artifactId>ApacheJMeter_core</artifactId>
+      <version>${apache-jmeter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.jmeter</groupId>
+      <artifactId>ApacheJMeter_components</artifactId>
+      <version>${apache-jmeter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.jmeter</groupId>
+      <artifactId>ApacheJMeter_http</artifactId>
+      <version>${apache-jmeter.version}</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.lazerycode.jmeter</groupId>
+        <artifactId>jmeter-maven-plugin</artifactId>
+        <version>${jmeter.plugin.version}</version>
+        <executions>
+          <!-- Generate JMeter configuration -->
+          <execution>
+            <id>configuration</id>
+            <goals>
+              <goal>configure</goal>
+            </goals>
+          </execution>
+          <!-- Run JMeter tests -->
+          <execution>
+            <id>jmeter-tests</id>
+            <goals>
+              <goal>jmeter</goal>
+            </goals>
+          </execution>
+          <!-- Fail build on errors in tests -->
+          <execution>
+            <id>jmeter-check-results</id>
+            <goals>
+              <goal>results</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jmeterVersion>${jmeter.version}</jmeterVersion>
+          <testResultsTimestamp>false</testResultsTimestamp>
+          <!-- JMeter plugins to be used in the test plans -->
+          <jmeterExtensions>
+            <artifact>com.blazemeter:jmeter-parallel:0.10</artifact>
+          </jmeterExtensions>
+          <generateReports>true</generateReports>
+          <resultsFileFormat>${jmeter.results.format}</resultsFileFormat>
+          <resultsDirectory>${jmeter.results}</resultsDirectory>
+          <reportDirectory>${jmeter.reports}</reportDirectory>
+          <customPropertiesFiles>
+            <!-- Global test properties for all tests -->
+            <file>${jmeter.global.props}</file>
+          </customPropertiesFiles>
+          <propertiesUser>
+            <putPkgThread>${putPkgThreadCount}</putPkgThread>
+            <multiThread>${multiThreadCount}</multiThread>
+            <singleThread>${singleThreadCount}</singleThread>
+            <batchThread>${batchThreadCount}</batchThread>
+            <queryOperationsThread>${queryOperationsThreadCount}</queryOperationsThread>
+            <postClustersThread>${postClustersThreadCount}</postClustersThread>
+            <getClustersThread>${getClustersThreadCount}</getClustersThread>
+            <onboardingThread>${onboardingThreadCount}</onboardingThread>
+            <deleteClustersThread>${deleteClustersThreadCount}</deleteClustersThread>
+            <scaleThread>${scaleThreadCount}</scaleThread>
+            <queryUIOperationsThread>${queryUIOperationsThreadCount}</queryUIOperationsThread>
+            <deletePkgThread>${deletePkgThreadCount}</deletePkgThread>
+          </propertiesUser>
+          <propertiesFilesDirectory>${project.basedir}/src/test/jmeter/plans/${test-name}</propertiesFilesDirectory>
+          <testFilesDirectory>${project.basedir}/src/test/jmeter/plans/${test-name}</testFilesDirectory>
+          <guiTestFile>${project.basedir}/src/test/jmeter/plans/${test-name}/${test-name}.jmx</guiTestFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

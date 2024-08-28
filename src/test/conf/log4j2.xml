@@ -1,0 +1,28 @@
+<Configuration status="WARN" packages="org.apache.jmeter.logging">
+  <Appenders>
+    <File name="jmeter-log" fileName="${sys:jmeter.logfile:-jmeter.log}" append="false">
+      <PatternLayout>
+        <pattern>%d %p %c{1.}: %m%n</pattern>
+      </PatternLayout>
+    </File>
+
+    <GuiLogEvent name="gui-log-event">
+      <PatternLayout>
+        <pattern>%d %p %c{1.}: %m%n</pattern>
+      </PatternLayout>
+    </GuiLogEvent>
+
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout>
+        <pattern>%d %p %c{1.}: %m%n</pattern>
+      </PatternLayout>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="jmeter-log"/>
+      <AppenderRef ref="gui-log-event"/>
+      <AppenderRef ref="console" level="fatal"/>
+    </Root>
+  </Loggers>
+</Configuration>

@@ -1,0 +1,50 @@
+# Compiled source #
+*.class
+*/bin/*
+
+# IntelliJ IDEA files
+.idea
+*.iws
+*.ipr
+*.iml
+*.patch
+
+# Test output files
+*/test-output/*gys
+/test-output/
+/test-output
+test-output/
+test-output/**/*
+*/test-output/**/*
+
+# Packages
+*.jar
+
+# Maven build files
+target/
+reports
+**/dependency-reduced-pom.xml
+
+# PMD
+.pmd
+
+# Merge files
+*.orig
+
+# tmp directories
+tmp/
+
+# HELM files
+*.tgz
+*.lock
+
+# Allure
+allure-results
+allure-report
+
+# CI 
+htpasswd
+helm-cred.yaml
+certs/**/*
+certs/
+certs/*
